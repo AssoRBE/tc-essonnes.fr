@@ -3,6 +3,7 @@ import fs from "fs";
 import path from "path";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+// Chemin: [slug]/page.tsx → ../ (network) ../ (gallery) ../ (app) ../ (root) puis content/networks
 import { networks } from "../../../../content/networks";
 import PhotoGrid from "../../../../components/PhotoGrid";
 

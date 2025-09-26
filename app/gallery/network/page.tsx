@@ -1,21 +1,24 @@
-import { notFound } from "next/navigation";
 import Link from "next/link";
-import { networks } from "../../../../content/networks";
+import { networks } from "../../../content/networks";
 
-export default function NetworkPage({ params }:{ params:{ slug:string } }) {
-  const net = networks.find(n => n.slug === params.slug);
-  if (!net) return notFound();
+export const metadata = {
+  title: "Réseaux – Galerie",
+  description: "Liste des réseaux de transport disponibles."
+};
 
+export default function NetworksIndexPage() {
   return (
-    <section className="gallery-wrap network-page">
-      <nav style={{marginBottom:8, opacity:.8}}>
-        <Link href="/gallery">← Retour aux réseaux</Link>
+    <section className="gallery-wrap">
+      <nav style={{ marginBottom: 8, opacity: 0.8 }}>
+        <Link href="/gallery">← Retour aux galeries</Link>
       </nav>
-      <h1 style={{margin:0}}>{net.name}</h1>
-
-      <div style={{marginTop:12, display:"flex", alignItems:"center", gap:16}}>
-        <img src={net.img} alt={net.name} style={{height:(net as any).h ?? 64, width:"auto"}} />
-        <div style={{opacity:.85}}>Page dédiée au réseau <strong>{net.name}</strong>. (Contenu à venir)</div>
+      <h1>Réseaux disponibles</h1>
+      <div className="net-grid">
+        {networks.map(net => (
+          <Link key={net.slug} href={net.href} className="net-card" title={net.name}>
+            <img src={net.img} alt={net.name} style={{ ['--logo-h' as any]: `${net.h ?? 64}px` }} />
+          </Link>
+        ))}
       </div>
     </section>
   );
