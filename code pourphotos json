@@ -1,0 +1,5 @@
+powershell -ExecutionPolicy Bypass -File .\Update-PhotosJson.ps1 -SkipExisting :: juste ceux a remplacer individuellement
+
+ou gros ménage :
+
+powershell -ExecutionPolicy Bypass -File .\Update-PhotosJson.ps1 : lors d'ajouts ou de modifications

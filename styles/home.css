@@ -1,0 +1,388 @@
+/* Mise en page */
+.home-wrap{ margin-top: 8px; }
+.home-title{ margin: 0 0 14px 0; }
+/* Grille : contenu à gauche, bulles à droite */
+.home-grid{
+  display: grid;
+  grid-template-columns: 1fr 420px;       /* gauche fluide, droite fixe */
+  grid-template-areas: "side left";       /* ← inverse l’ordre visuel */
+  gap: 20px;
+  align-items: start;
+}
+
+.home-left{
+  grid-area: left;                         /* bulles à droite */
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.home-side{
+  grid-area: side;                         /* zone libre à gauche */
+  min-height: 140px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(255,255,255,.02);
+}
+
+/* Mobile : une seule colonne, bulles en premier */
+@media (max-width: 900px){
+  .home-grid{
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "left"
+      "side";
+  }
+}
+
+
+/* Bulle générique */
+.bubble-card{
+  position: relative;
+  background: rgba(255,255,255,.10);
+  border: 1px solid rgba(255,255,255,.22);
+  border-radius: 16px;
+  padding: 16px;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  box-shadow: 0 6px 18px rgba(0,0,0,.20);
+  transition: background .15s ease, border-color .15s ease, transform .05s ease;
+}
+.bubble-card:hover{ background: rgba(255,255,255,.14); border-color: rgba(255,255,255,.30); }
+
+/* Pastille d'icône */
+.bubble-pin{
+  position: absolute; top: -12px; left: -12px;
+  width: 36px; height: 36px; border-radius: 999px;
+  background: #ffffff; display: grid; place-items: center;
+  border: 1px solid rgba(0,0,0,.12);
+  box-shadow: 0 8px 20px rgba(0,0,0,.25);
+}
+.bubble-pin img{ width: 20px; height: 20px; }
+
+/* Anecdote */
+.anec-text{ margin: 0; line-height: 1.55; opacity: .96; }
+.anec-foot{ margin-top: 10px; font-size: .85rem; opacity: .65; }
+
+/* Photo du mois */
+.photo-head{ font-weight: 700; letter-spacing: .2px; margin-bottom: 8px; }
+.photo-img-wrap img{
+  width: 100%; height: auto; display: block; border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.12);
+}
+.photo-caption{ margin-top: 8px; opacity: .9; }
+
+/* Accessibilité */
+.sr-only{
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+  clip:rect(0,0,0,0);white-space:nowrap;border:0;
+}
+
+/* Responsive */
+@media (max-width: 900px){
+  .home-grid{ grid-template-columns: 1fr; }
+}
+
+/* --- pastille flottante à DROITE + plus grande + fond sombre translucide --- */
+.bubble-pin{
+  position: absolute; top: -14px; right: -14px; /* ← à droite */
+  width: 44px; height: 44px; border-radius: 999px;
+  /* verre sombre (pas blanc) */
+  background: rgba(0,0,0,.55);
+  border: 1px solid rgba(255,255,255,.25);
+  backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+  display: grid; place-items: center;
+  box-shadow: 0 10px 24px rgba(0,0,0,.35);
+}
+.bubble-pin img{ width: 24px; height: 24px; }
+
+/* titre interne des bulles */
+.bubble-title{
+  font-weight: 800; letter-spacing: .2px;
+  margin: 0 0 8px 0; opacity: .95;
+}
+
+/* supprime l’ancien petit texte de pied d’anecdote si présent */
+.anec-foot{ display: none !important; }
+
+/* lien de légende sous la photo du mois */
+.photo-caption-link{
+  color: #fff; text-decoration: none; border-bottom: 1px dashed rgba(255,255,255,.35);
+}
+.photo-caption-link:hover{ border-bottom-color: rgba(255,255,255,.6); }
+
+.home-welcome p { margin: 6px 0 0; opacity: .9; }
+
+/* les styles "Derniers ajouts" sont namespacés, donc sans impact sur tes bulles */
+.tce-latest-head { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+.tce-latest-icon { width:20px; height:auto; opacity:.9; filter:grayscale(1) brightness(.95); }
+/* Force l'emplacement des colonnes dans la grille */
+.home-left { grid-column: 1 !important; }
+.home-side { grid-column: 2 !important; }
+/* Si c'est une flexbox plutôt qu'une grid, utilise à la place :
+.home-left { order: 1; } .home-side { order: 2; }
+*/
+/* Icônes des pastilles (anneau conservé) */
+.home-wrap .bubble-badge,
+.home-wrap .bubble-pin {                /* tes classes de pastille */
+  display:flex; align-items:center; justify-content:center;
+}
+
+.home-wrap .bubble-badge > :is(svg,img),
+.home-wrap .bubble-pin   > :is(svg,img) {
+  width: 32px;   /* ← taille de l’icône, ajuste 24–32 selon goût */
+  height: 32px;
+}
+
+/* Si l’icône est du texte (ex: “i”) */
+.home-wrap .bubble-badge,
+.home-wrap .bubble-pin {
+  font-size: 26px;                      /* même taille que ci-dessus */
+  line-height: 1;
+}
+/* Espace vertical entre les cartes de la colonne gauche */
+.home-left { display:flex; flex-direction:column; gap: 22px; }
+
+/* Assure que les pastilles peuvent déborder sans être rognées */
+.home-left .bubble { overflow: visible; }
+
+/* Accueil : compacter l’espace juste sous le header */
+body > main{ padding-top: calc(var(--header-h, 140px) + 4px) !important; }
+
+/* Le titre ne rajoute pas de marge au-dessus */
+.home-title{ margin: 0 0 14px; }
+
+/* (au cas où une marge parasite traîne sur le wrapper) */
+.home-wrap{ margin-top: 0 !important; }
+
+/* Colonne de droite : espace entre les deux cartes */
+.home-side{
+  display: flex;                 /* ou grid si tu préfères */
+  flex-direction: column;
+  gap: 16px;                     /* ← ajuste 12/14/20 selon ton goût */
+}
+
+/* Au cas où : si tes cartes ont la classe .bubble, on évite tout clipping */
+.home-side .bubble{
+  overflow: visible;
+}
+
+/* Variante équivalente (si tu ne veux pas toucher au display):
+   crée un espace entre tous les enfants consécutifs */
+.home-side > * + *{ margin-top: 5px; }
+
+/* Colonne de droite : espace + ordre de superposition */
+.home-side{
+  display: flex;
+  flex-direction: column;
+  gap: 16px;                /* espace visible entre les 2 cartes */
+}
+/* Chaque carte suivante passe AU-DESSUS de la précédente */
+.home-side > *{ position: relative; z-index: 0; }
+.home-side > * + *{ z-index: 2; }  /* évite que l’anneau soit "mangé" par la carte du dessus */
+
+/* On ne coupe pas ce qui dépasse (l’anneau) */
+.home-side .bubble{ overflow: visible; }
+
+/* Si tes badges ont une classe dédiée, on peut aussi les prioriser */
+.home-side .badge,
+.home-side .pin,
+.home-side .corner-icon{ position: absolute; z-index: 3; }
+
+/* Colonne droite : crée un vrai espace entre les 2 cartes
+   et assure l'ordre de superposition pour que l'anneau
+   de la 2e carte passe au-dessus de la 1re. */
+.home-side{
+  display: flex;
+  flex-direction: column;
+  gap: 22px;                    /* ← augmente si besoin (18–24px) */
+}
+
+.home-side > *{ position: relative; z-index: 0; }
+.home-side > * + *{ z-index: 3; }     /* la 2e carte au-dessus de la 1re */
+.home-side .bubble{ overflow: visible; }  /* pas de clipping */
+
+/* Si tes badges/anneaux ont une classe dédiée, on les met au top */
+.home-side .badge,
+.home-side .pin,
+.home-side .corner-icon{
+  position: absolute;
+  z-index: 4;
+}
+/* Colonne droite : espace + superposition correcte */
+.home-side{
+  display: flex;
+  flex-direction: column;
+  gap: 22px;                /* ↑ espace visible entre les 2 cartes */
+  isolation: isolate;       /* crée un contexte de pile propre */
+}
+
+/* Chaque carte */
+.home-side .bubble{
+  position: relative; 
+  z-index: 0;
+  overflow: visible;        /* ne coupe pas l’anneau qui dépasse */
+}
+
+/* La carte du dessous (ex: "Photo du moment") passe AU-DESSUS de la précédente */
+.home-side .bubble + .bubble{
+  z-index: 3;
+}
+
+/* Si ton badge/anneau a sa propre classe, on la priorise (met-les toutes si besoin) */
+.home-side .corner-icon,
+.home-side .badge,
+.home-side .pin{
+  position: absolute;
+  z-index: 4;               /* au-dessus des cartes */
+}
+/* Forcer la visibilité sur les deux bulles de droite uniquement */
+.home-side .bubble{ overflow: visible !important; }
+
+/* --- Pastille : ne jamais la couper et la rendre au-dessus --- */
+.home-side > .bubble{
+  position: relative;
+  overflow: visible !important;    /* ← autorise la pastille à dépasser */
+  z-index: 0;                      /* base */
+}
+
+/* La 2e carte (photo du moment) passe au-dessus de la précédente
+   pour éviter que la 1re peigne par-dessus la pastille */
+.home-side > .bubble + .bubble{
+  z-index: 2;
+}
+
+/* Espace clair entre les 2 cartes (ajuste si tu veux) */
+.home-side{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;                       /* 18–24px selon ton goût */
+  isolation: isolate;              /* nouveau contexte de pile, z-index prévisible */
+}
+
+/* La pastille elle-même : toujours au-dessus */
+.home-side .bubble-pin{
+  z-index: 5;                      /* au-dessus des cartes */
+  pointer-events: none;            /* optionnel : pas cliquable */
+}
+main > section:first-child{ margin-top: 0; }
+.home-wrap h1, .gallery-wrap h1{ margin-top: 0; }
+
+/* Colonne droite : espace + pile propre */
+.home-side{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;                 /* ajuste 18–24 si besoin */
+  isolation: isolate;        /* nouveau contexte de pile */
+}
+
+/* Le conteneur de la pastille NE coupe pas ce qui dépasse */
+.home-side > *:has(.bubble-pin){
+  position: relative;
+  overflow: visible !important;      /* débordement autorisé pour l’anneau */
+  z-index: 0;
+}
+
+/* La carte du bas passe au-dessus de la précédente */
+.home-side > * + *{
+  position: relative;
+  z-index: 2;
+}
+
+/* La pastille elle-même au-dessus de la carte */
+.home-side .bubble-pin{
+  z-index: 3;
+  pointer-events: none;              /* optionnel */
+}
+
+/* Ta pastille existante (on garde tes tailles) */
+.bubble-pin{
+  position: absolute; top: -12px; left: -12px;
+  width: 36px; height: 36px; border-radius: 999px;
+  background: #fff; display: grid; place-items: center;
+  border: 1px solid rgba(0,0,0,.12);
+  box-shadow: 0 8px 20px rgba(0,0,0,.25);
+}
+.bubble-pin img{ width: 20px; height: 20px; }
+
+/* Pastille = fond/bord comme les boutons du menu (couleurs à variables) */
+:root{
+  /* aligne ces 4 valeurs sur celles de tes boutons du menu */
+  --ui-chip-bg:       rgba(255,255,255,.06);
+  --ui-chip-bg-hover: rgba(255,255,255,.10);
+  --ui-chip-bd:       rgba(255,255,255,.20);
+  --ui-chip-bd-hover: rgba(255,255,255,.28);
+}
+
+.bubble-pin{
+  background: var(--ui-chip-bg);
+  border: 1px solid var(--ui-chip-bd);
+  /* pas de filtre global ici → on garde les couleurs d'origine de l'image */
+}
+
+.bubble:hover .bubble-pin,
+.bubble-pin:hover{
+  background: var(--ui-chip-bg-hover);
+  border-color: var(--ui-chip-bd-hover);
+}
+
+/* Restaure l'icône telle quelle (annule l'inversion précédente) */
+.bubble-pin img{
+  width: 20px; height: 20px;            /* garde ta taille d’origine */
+  filter: none !important;
+  mix-blend-mode: normal !important;
+}
+
+body > main{ padding-top: 8px !important; }
+
+/* 1) Le "rail" vient du cadre du conteneur .home-side : on le supprime */
+.home-side{
+  border: none !important;
+  background: transparent !important;
+  /* on garde l'empilement vertical et l'espace entre cartes */
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  isolation: isolate; /* pile propre pour les z-index des badges */
+}
+
+/* 2) HALO blanc : il est causé par le backdrop-filter des bulles qui floute
+   ce qu'il y a derrière (ton abribus). On le coupe côté bulles. */
+.bubble,
+.bubble-card{
+  background: rgba(255,255,255,.10);
+  border: 1px solid rgba(255,255,255,.22);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 6px 18px rgba(0,0,0,.20);
+  transition: background .15s ease, border-color .15s ease, transform .05s ease;
+  /* désactive le blur responsable du halo */
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+.bubble:hover,
+.bubble-card:hover{
+  background: rgba(255,255,255,.14);
+  border-color: rgba(255,255,255,.30);
+}
+
+/* 3) On s’assure que rien ne "coupe" les pastilles et que la 2e carte passe bien au-dessus */
+.home-side > *{ position: relative; z-index: 0; overflow: visible; }
+.home-side > * + *{ z-index: 2; }
+.home-side .bubble-pin{ z-index: 3; pointer-events: none; }
+
+/* Sous-couche sombre discrète sous l’abribus pour le contraste */
+.home-wrap{ position: relative; z-index: 0; }
+.home-wrap::before{
+  content: "";
+  position: fixed;
+  left: 0; bottom: 0;
+  width: clamp(280px, 32vw, 520px);
+  height: clamp(200px, 30vw, 460px);
+  background: radial-gradient(60% 70% at 22% 85%,
+              rgba(0,0,0,.42), rgba(0,0,0,0) 70%);
+  pointer-events: none;
+  z-index: 0; /* derrière le contenu */
+}
+.home-grid, .home-left, .home-side{ position: relative; z-index: 1; }

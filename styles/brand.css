@@ -1,0 +1,351 @@
+:root {
+  --anthracite: #131416;   /* fond général */
+  --anthracite-2: #1A1C20; /* surfaces */
+}
+
+body { background: var(--anthracite); }
+
+/* ==== Header (logo sur image de fond) ==== */
+.site-header{
+  position: relative;
+  width: 100%;
+  height: clamp(220px, 38vw, 420px);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50% 50%; /* surchargé par style inline */
+  border-radius: 20px;
+  overflow: hidden;
+}
+.site-header__overlay{
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,.30) 0%, rgba(0,0,0,.55) 70%, rgba(0,0,0,.65) 100%);
+}
+.site-header__inner{
+  position: relative; z-index: 1;
+  max-width: 1200px; margin: 0 auto; padding: 12px 16px;
+  display: flex; align-items: center;
+}
+.logo-wrap .logo{ height: 29px; width: auto; display: block; }
+
+/* Panneau de reposition (visible en dev) */
+.repositioner{
+  position: absolute; right: 12px; bottom: 12px; z-index: 2;
+  display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+  background: rgba(0,0,0,.55); border: 1px solid rgba(255,255,255,.15);
+  border-radius: 12px; padding: 8px 12px;
+}
+.repositioner label{ color: #E6EAF0; font-size: 12px; display: flex; gap: 6px; align-items: center; }
+.repositioner input[type="range"]{ width: 120px; }
+.repositioner button{ background:#0EA5E9; color:#fff; border:0; border-radius:8px; padding:4px 8px; cursor:pointer; }
+
+/* ==== Bandeau menu ==== */
+.menu-band {
+  display: flex; gap: 12px; justify-content: center; align-items: center;
+  padding: 10px 16px; background: #0F1114; border-radius: 14px; margin-top: 10px;
+}
+.menu-link {
+  font-family: 'Swiss721', Helvetica, Arial, sans-serif; /* Swiss 721 */
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  color: #E6EAF0;
+  opacity: 0.9;
+}
+.menu-link:hover { opacity: 1; text-decoration: underline; }
+
+/* ==== Décor gauche (abribus) ==== */
+/* ==== Décor gauche (abribus : du dessous du header jusqu'en bas) ==== */
+:root{
+  --abribus-w: 300px;  /* largeur de la bande à gauche */
+}
+
+:root{
+  --abribus-w: 300px;           /* largeur de la bande à gauche */
+}
+
+/* Bande abribus = image non déformée (hauteur 100%, largeur auto) */
+/* ===== Abribus discret : réglages via variables ===== */
+:root{
+  --abribus-w: 300px;          /* largeur de la bande à gauche */
+  --abribus-opacity: .12;       /* transparence globale (0–1) */
+  --abribus-gray: 1;            /* 1 = N&B, 0 = couleur */
+  --abribus-sat: .18;           /* saturation résiduelle */
+  --abribus-bright: .80;        /* luminosité */
+  --abribus-contrast: .92;      /* contraste */
+  --abribus-tint: 215 10% 34%;  /* teinte HSL (anthracite bleuté) */
+  --abribus-tint-alpha: .22;    /* intensité de la teinte (0–1) */
+  --abribus-fade: 55%;          /* fondu vers la droite (0–100%) */
+}
+
+/* Bande collée à gauche, du bas du header au bas de l’écran */
+.decor-left{
+  position: fixed;
+  left: 0;
+  top: var(--header-h, 140px);
+  bottom: 0;
+  width: var(--abribus-w);
+  display: flex; align-items: flex-start; justify-content: flex-start;
+  pointer-events: none; z-index: 0;
+  isolation: isolate;            /* pour un mélange propre avec ::after */
+}
+
+/* Image non déformée */
+.decor-left-img{
+  height: 100%;
+  width: auto;
+  object-fit: contain; object-position: left top;
+  opacity: var(--abribus-opacity);
+  filter:
+    grayscale(var(--abribus-gray))
+    saturate(var(--abribus-sat))
+    brightness(var(--abribus-bright))
+    contrast(var(--abribus-contrast));
+}
+
+/* Légère teinte + fondu vers la droite (bord doux) */
+.decor-left::after{
+  content: "";
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(to right,
+      hsl(var(--abribus-tint) / var(--abribus-tint-alpha)) 0,
+      transparent var(--abribus-fade)
+    );
+  mix-blend-mode: multiply;      /* teinte douce, discrète */
+  pointer-events: none;
+}
+
+
+.site-header,
+.site-header__overlay {
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: -1 !important;
+}
+
+/* Header (full width, fin) */
+.site-header{
+  position: relative;
+  width: 100%;
+  height: 140px; /* surchargé inline */
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  border-radius: 0;
+  overflow: hidden;
+}
+/* Header fixe en haut */
+.site-header{
+  position: fixed;         /* ← fixe */
+  top: 0; left: 0; right: 0;
+  z-index: 40;
+  width: 100%;
+  height: 140px;           /* sera surchargé par la prop */
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  border-radius: 0;
+  overflow: hidden;
+}
+.site-header__overlay{ position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,.20) 0%, rgba(0,0,0,.45) 80%);
+}
+.site-header__inner{
+  position: relative; z-index: 1;
+  max-width: 1200px; margin: 0 auto; padding: 10px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+.site-header__inner{
+  position: relative; z-index: 1;
+  max-width: 1200px; margin: 0 auto; padding: 10px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.logo-wrap{ display:block; transform: translateY(var(--logo-offset, 0px)); }
+.logo-wrap .logo{ height: 96px; width: auto; display: block; }
+
+/* Menu dans le header */
+.site-nav{ display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+.site-nav .menu-link{
+  font-family: 'Swiss721', Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  font-size: .95rem;
+  letter-spacing: .02em;
+  color: #E6EAF0; opacity: .92;
+  padding: 6px 8px;
+}
+.site-nav .menu-link:hover{ opacity: 1; text-decoration: underline; }
+
+/* Responsive : menu passe à la ligne si besoin */
+@media (max-width: 840px){
+  .site-header__inner{ flex-wrap: wrap; row-gap: 6px; }
+  .site-nav{ width: 100%; justify-content: flex-start; gap: 12px; padding-bottom: 6px; }
+}
+/* --- Boutons de navigation du header --- */
+.header-nav{
+  display:flex;
+  gap:12px;
+  align-items:center;
+}
+
+/* bouton “pill” avec blur et états */
+.nav-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:8px 14px;
+  border-radius:999px;
+  font-weight:600;
+  letter-spacing:.2px;
+  color:#fff;
+  text-decoration:none;
+
+  background: rgba(255,255,255,.10);
+  border:1px solid rgba(255,255,255,.22);
+  box-shadow:
+    0 1px 0 rgba(0,0,0,.25),
+    inset 0 0 0 1px rgba(255,255,255,.04);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+
+  transition:
+    background .15s ease,
+    border-color .15s ease,
+    transform .05s ease;
+}
+
+.nav-btn:hover{
+  background: rgba(255,255,255,.16);
+  border-color: rgba(255,255,255,.30);
+}
+
+.nav-btn:active{ transform: translateY(1px); }
+
+.nav-btn:focus-visible{
+  outline: none;
+  box-shadow:
+    0 0 0 2px #0f1114,
+    0 0 0 4px #ffffff;
+}
+
+/* état “actif” (page courante) */
+.nav-btn.is-active{
+  background:#fff;
+  color:#0f1114;
+  border-color:#fff;
+}
+
+/* responsive: compacter un peu */
+@media (max-width: 900px){
+  .header-nav{ gap:8px; flex-wrap:wrap; justify-content:flex-end; }
+  .nav-btn{ padding:6px 10px; font-size:.92rem; }
+}
+/* --- Boutons de navigation du header --- */
+.header-nav{
+  display:flex;
+  gap:12px;
+  align-items:center;
+}
+
+/* bouton “pill” avec blur et états */
+.nav-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:8px 14px;
+  border-radius:999px;
+  font-weight:600;
+  letter-spacing:.2px;
+  color:#fff;
+  text-decoration:none;
+
+  background: rgba(255,255,255,.10);
+  border:1px solid rgba(255,255,255,.22);
+  box-shadow:
+    0 1px 0 rgba(0,0,0,.25),
+    inset 0 0 0 1px rgba(255,255,255,.04);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+
+  transition:
+    background .15s ease,
+    border-color .15s ease,
+    transform .05s ease;
+}
+
+.nav-btn:hover{
+  background: rgba(255,255,255,.16);
+  border-color: rgba(255,255,255,.30);
+}
+
+.nav-btn:active{ transform: translateY(1px); }
+
+.nav-btn:focus-visible{
+  outline: none;
+  box-shadow:
+    0 0 0 2px #0f1114,
+    0 0 0 4px #ffffff;
+}
+
+/* état “actif” (page courante) */
+.nav-btn.is-active{
+  background:#fff;
+  color:#0f1114;
+  border-color:#fff;
+}
+
+/* responsive: compacter un peu */
+@media (max-width: 900px){
+  .header-nav{ gap:8px; flex-wrap:wrap; justify-content:flex-end; }
+  .nav-btn{ padding:6px 10px; font-size:.92rem; }
+}
+/* ↓ décalage GLOBAL de toutes les pages sous le header fixe */
+body{ padding-top: var(--header-h, 140px); }
+
+/* conteneur commun (remplace l'ancien style inline du <main>) */
+.main-shell{
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+/* coins arrondis bas (si pas déjà posé) */
+:root{ --header-radius: 16px; }
+.site-header{
+  border-bottom-left-radius: var(--header-radius);
+  border-bottom-right-radius: var(--header-radius);
+  overflow: hidden;
+}
+.site-header__overlay{
+  border-bottom-left-radius: var(--header-radius);
+  border-bottom-right-radius: var(--header-radius);
+}
+
+/* 1) Supprimer le halo de l’abribus (on retire la surcouche) */
+.decor-left::after{
+  content: none !important;           /* kill la couche teinte/fondu */
+  background: none !important;
+  mix-blend-mode: normal !important;
+}
+
+/* 2) Garder du contraste sans halo : on fonce légèrement l’image elle-même */
+.decor-left-img{
+  opacity: .05 !important;            /* ajuste .10 – .18 selon goût */
+  filter:
+    grayscale(1)
+    saturate(.2)
+    brightness(.85)                   /* <= < 1 pour éviter tout éclaircissement */
+    contrast(.95);
+  mix-blend-mode: normal !important;  /* aucune fusion exotique */
+}
+
+/* 3) S’assurer qu’aucun effet global ne réapplique un glow */
+.decor-left,
+.decor-left *{
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  text-shadow: none !important;
+  box-shadow: none !important;
+}

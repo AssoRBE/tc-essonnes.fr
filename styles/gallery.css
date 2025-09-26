@@ -1,0 +1,223 @@
+/* ========== Réseaux (grille + cartes) ========== */
+:root{ --card-min-h: 50px; }  /* 96 / 100 / 110 / 120 selon ton goût */
+
+:root{
+  /* Cartes réseaux */
+  --card-min-h: 100px;
+  --card-pad-x: 12px;             /* padding horizontal de base */
+  --net-logo-max: 72px;           /* hauteur max logo pour ne pas grossir la carte */
+  --thumb-ratio: 1;               /* 1 = carré, 1.333 = 4/3 */
+
+  /* Abribus dans les cartes */
+  --card-abribus-url: url("/brand/abribus.png"); /* ajuste le chemin si besoin */
+  --card-abribus-w: 46px;
+  --card-abribus-gap: 8px;
+  --card-abribus-y: calc(50% + 5px); /* un peu plus bas que centré */
+
+  /* Couleurs */
+  --bg: #0F1114;
+  --bg-hover: #121418;
+  --bd: rgba(255,255,255,.10);
+  --bd-hover: rgba(255,255,255,.22);
+}
+
+/* Grille 3 par rangée */
+.net-grid{
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+@media (max-width: 900px){ .net-grid{ grid-template-columns: repeat(2, minmax(0,1fr)); } }
+@media (max-width: 560px){ .net-grid{ grid-template-columns: 1fr; } }
+
+/* Carte réseau */
+.net-card{
+  --net-logo-h: 64px; /* par carte: style={{'--net-logo-h':'72px'}} */
+  position: relative;
+  display:flex; align-items:center; justify-content:center;
+  background: var(--bg); border:1px solid var(--bd); border-radius:14px;
+  min-height: var(--card-min-h);
+  padding: 14px var(--card-pad-x);
+  /* on réserve la gouttière pour l’abribus à gauche */
+  padding-inline-start: calc(var(--card-pad-x) + var(--card-abribus-w) + var(--card-abribus-gap));
+  transition: transform .15s ease, border-color .15s ease, background .15s ease;
+  overflow: hidden; /* pour que la bordure “coupe” l’abribus */
+}
+.net-card:hover{ transform: translateY(-2px); background:var(--bg-hover); border-color:var(--bd-hover); }
+
+/* Abribus collé à la bordure gauche (discret, plus bas) */
+.net-card::before{
+  content:"";
+  position:absolute; inset:0 auto 0 0; width: var(--card-abribus-w);
+  background: var(--card-abribus-url) no-repeat left var(--card-abribus-y) / contain;
+  pointer-events:none; opacity:.22; filter: grayscale(1) contrast(.65) brightness(.9);
+}
+
+/* Logos : clamp pour ne pas forcer la carte à grandir */
+.net-card img{
+  display:block; width:auto;
+  height: min(var(--net-logo-h), var(--net-logo-max));
+  max-height: min(var(--net-logo-h), var(--net-logo-max));
+}
+
+/* ========== Grille des photos (mosaïque compacte) ========== */
+.photo-grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+.photo-card{
+  display:flex; flex-direction:column; text-align:center; cursor: zoom-in;
+  background: var(--bg); border:1px solid var(--bd); border-radius:12px; overflow:hidden;
+  transition: transform .08s ease, border-color .15s ease, box-shadow .15s ease;
+}
+.photo-card:hover{ transform: translateY(-2px); border-color: var(--bd-hover); box-shadow: 0 10px 20px rgba(0,0,0,.25); }
+
+.photo-thumb{ background:#0b0d10; }
+.photo-thumb img{ display:block; width:100%; height:100%; object-fit:cover; aspect-ratio: var(--thumb-ratio); }
+
+/* Métadonnées visibles sur fond sombre */
+.photo-meta{ padding: 8px 10px 10px; }
+.photo-title{ color:#E7EAF0; font-weight:700; font-size:.95rem; margin:4px 0 2px; }
+.photo-desc{  color:#C7CCD4; font-size:.85rem; }
+
+/* ========== Lightbox ========== */
+.lb-backdrop{
+  position: fixed;
+  top: var(--header-h, 140px);
+  left:0; right:0;
+  height: calc(100dvh - var(--header-h, 140px));
+  background: rgba(0,0,0,.65);
+  display: grid; place-items: center;
+  z-index: 1000;
+  padding: 16px;
+  backdrop-filter: blur(2px);
+}
+.lb-modal{
+  width: min(1100px, 100%); max-height: 90vh;
+  background: #121418; border: 1px solid var(--bd-hover);
+  border-radius: 16px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,.5);
+  position: relative;
+}
+.lb-modal.two-cols{ display:grid; grid-template-columns: 62% 38%; }
+.lb-left{ background:#0b0d10; display:grid; place-items:center; min-height: 60vh; }
+.lb-left img{ max-width:100%; max-height:100%; object-fit:contain; }
+
+.lb-right{ padding:22px 18px; overflow:auto; }
+.lb-title{
+  font-family: "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
+  font-weight: 500; font-size: 28px; margin: 4px 0 10px; color:#fff;
+}
+.lb-desc{ opacity:.92; line-height:1.6; font-size:1.05rem; color:rgba(255,255,255,.9); }
+
+.lb-x,
+.lb-nav{
+  position:absolute; top:50%; transform: translateY(-50%);
+  width: 44px; height: 44px; border-radius: 999px;
+  border:1px solid rgba(255,255,255,.25); background: rgba(255,255,255,.10); color:#fff; font-size: 20px;
+}
+.lb-prev{ left: 10px; } .lb-next{ right: 10px; }
+.lb-x{ top:6px; right:6px; transform:none; width:36px; height:36px; font-size:22px; }
+
+/* Mobile: pile image puis texte */
+@media (max-width: 780px){
+  .lb-modal.two-cols{ grid-template-columns: 1fr; }
+  .lb-right{ border-top: 1px solid rgba(255,255,255,.12); }
+}
+
+/* ========== “Derniers ajouts” (namespacé, n’écrase rien) ========== */
+.tce-latest-card{
+  background:#0F1114; border:1px solid rgba(255,255,255,.12);
+  border-radius:12px; padding:14px;
+}
+.tce-latest-head{ display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+.tce-latest-icon{ width:20px; height:auto; opacity:.9; filter: grayscale(1) brightness(.95); }
+
+.latest-wrap{ display:flex; flex-direction:column; gap:10px; }
+.latest-grid{ display:grid; gap:10px; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+.latest-item{
+  display:flex; flex-direction:column; gap:6px;
+  background:#0C0E10; border:1px solid rgba(255,255,255,.10);
+  border-radius:10px; padding:6px; text-decoration:none;
+  transition: transform .12s ease, border-color .15s ease, background .15s ease;
+}
+.latest-item:hover{ transform: translateY(-2px); border-color: rgba(255,255,255,.22); background:#121418; }
+.latest-thumb{ border-radius:8px; overflow:hidden; background:#0b0d10; }
+.latest-thumb img{ display:block; width:100%; height:120px; object-fit:cover; }
+.latest-meta{ padding: 0 4px 4px; }
+.latest-title{ color:#E7EAF0; font-size:.9rem; line-height:1.3; height:2.6em; overflow:hidden; }
+.latest-more{
+  align-self:center; padding:8px 12px; border-radius:999px; border:1px solid rgba(255,255,255,.2);
+  background:rgba(255,255,255,.06); color:#fff; cursor:pointer;
+}
+.latest-more:hover{ background:rgba(255,255,255,.1); }
+
+/* === Carte "Derniers ajouts" (namespacé) === */
+.tce-latest-card{ background:#0F1114; border:1px solid rgba(255,255,255,.12); border-radius:12px; padding:14px; }
+.tce-latest-head{ display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+.tce-latest-icon{ width:20px; height:auto; opacity:.9; filter:grayscale(1) brightness(.95); }
+
+.latest-wrap{ display:flex; flex-direction:column; gap:10px; }
+.latest-grid{ display:grid; gap:10px; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); }
+.latest-item{ display:flex; flex-direction:column; gap:6px; background:#0C0E10; border:1px solid rgba(255,255,255,.10); border-radius:10px; padding:6px; text-decoration:none; transition:transform .12s ease,border-color .15s ease,background .15s; }
+.latest-item:hover{ transform:translateY(-2px); border-color:rgba(255,255,255,.22); background:#121418; }
+.latest-thumb{ border-radius:8px; overflow:hidden; background:#0b0d10; }
+.latest-thumb img{ display:block; width:100%; height:120px; object-fit:cover; }
+.latest-meta{ padding:0 4px 4px; } .latest-title{ color:#E7EAF0; font-size:.9rem; line-height:1.3; height:2.6em; overflow:hidden; }
+.latest-more{ align-self:center; padding:8px 12px; border-radius:999px; border:1px solid rgba(255,255,255,.2); background:rgba(255,255,255,.06); color:#fff; cursor:pointer; }
+.latest-more:hover{ background:rgba(255,255,255,.1); }
+
+/* Bulle de bienvenue (réutilise ton style .bubble) */
+.home-welcome p{ margin: 6px 0 0; opacity:.9; }
+
+/* Carte “Derniers ajouts” — namespacée */
+.tce-latest-head{ display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+.tce-latest-icon{ width:20px; height:auto; opacity:.9; filter: grayscale(1) brightness(.95); }
+
+/* Grille de vignettes compacte */
+.latest-wrap{ display:flex; flex-direction:column; gap:10px; }
+.latest-grid{ display:grid; gap:10px; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); }
+.latest-item{
+  display:flex; flex-direction:column; gap:6px;
+  background:#0C0E10; border:1px solid rgba(255,255,255,.10);
+  border-radius:10px; padding:6px; text-decoration:none;
+  transition: transform .12s ease, border-color .15s ease, background .15s ease;
+}
+.latest-item:hover{ transform: translateY(-2px); border-color: rgba(255,255,255,.22); background:#121418; }
+.latest-thumb{ border-radius:8px; overflow:hidden; background:#0b0d10; }
+.latest-thumb img{ display:block; width:100%; height:120px; object-fit:cover; }
+.latest-meta{ padding:0 4px 4px; }
+.latest-title{ color:#E7EAF0; font-size:.9rem; line-height:1.3; height:2.6em; overflow:hidden; }
+.latest-more{
+  align-self:center; padding:8px 12px; border-radius:999px; border:1px solid rgba(255,255,255,.2);
+  background:rgba(255,255,255,.06); color:#fff; cursor:pointer;
+}
+.latest-more:hover{ background:rgba(255,255,255,.1); }
+
+/* ====== Fix cartes & logos : hauteur carte FIXE, logos clampés ====== */
+
+/* Place utile pour le logo = hauteur carte - 2x padding horizontal */
+:root{
+  --net-logo-cap: calc(var(--card-min-h) - 2 * var(--card-pad-x));
+}
+
+/* carte immobile (pas min-height) */
+.net-card{
+  height: var(--card-min-h);
+  min-height: unset;           /* neutralise l'ancienne valeur si encore présente */
+  overflow: hidden;            /* coupe tout débordement */
+}
+
+/* logos : s'adaptent sans JAMAIS agrandir la carte */
+.net-card img{
+  /* on prend --logo-h si fourni inline, sinon --net-logo-h, sinon 64px */
+  --_h: var(--logo-h, var(--net-logo-h, 64px));
+
+  height: auto !important;     /* neutralise l'ancien height: ... */
+  max-height: min(var(--_h), var(--net-logo-cap));  /* clampé à l'espace utile */
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  display: block;
+}
+

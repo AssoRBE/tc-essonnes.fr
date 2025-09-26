@@ -1,0 +1,76 @@
+export const networks = [
+    {
+        "img":  "/networks/reseau-tisse.png",
+        "href":  "/gallery/network/tisse",
+        "name":  "TISSE",
+        "slug":  "tisse",
+        "h":  64
+    },
+    {
+        "img":  "/networks/reseau-transdev-coeur-essonne.png",
+        "href":  "/gallery/network/transdev-coeur-essonne",
+        "name":  "Transdev Cœur Essonne",
+        "slug":  "transdev-coeur-essonne",
+        "h":  64
+    },
+    {
+        "img":  "/networks/reseau-transdev-senart.png",
+        "href":  "/gallery/network/transdev-senart",
+        "name":  "Transdev Sénart",
+        "slug":  "transdev-senart",
+        "h":  64
+    },
+{
+  img: "/networks/reseau-retrobus-essonne.png",
+  href: "/gallery/network/retrobus-essonne",
+  name: "Retrobus Essonne",
+  slug: "retrobus-essonne",
+  folder: "retrobus-essonne",
+  h: 56
+},
+    {
+        "img":  "/networks/reseau-rer.png",
+        "href":  "/gallery/network/rer",
+        "name":  "RER",
+        "slug":  "rer",
+        "h":  60
+    },
+    {
+        "img":  "/networks/reseau-cars-soeur.png",
+        "href":  "/gallery/network/cars-soeur",
+        "name":  "Cars Soeur",
+        "slug":  "cars-soeur",
+        "h":  60
+    },
+    {
+        "img":  "/networks/reseau-ratp.png",
+        "href":  "/gallery/network/ratp",
+        "name":  "RATP",
+        "slug":  "ratp",
+        "h":  60
+    },
+  {
+    img:  "/networks/reseau-kvyvs.png",
+    href: "/gallery/network/kvyvs",
+    name: "Keolis Val d'Yerres Val de Seine",
+    slug: "kvyvs",          // ← homogénéisé
+    folder: "kvyvs",        // ← dossier présent: public/photos/kvyvs
+    h: 64
+  },
+ {
+  img: "/networks/reseau-ratpc_saclay.png",
+  href: "/gallery/network/ratp_cap_saclay",
+  name: "RATP Cap Saclay",
+  slug: "ratp_cap_saclay",
+  folder: "ratp_cap_saclay",
+  h: 60
+},
+  {
+    img:  "/networks/nav_rerd.png",
+    href: "/gallery/network/substitution_rerd", // ← tu gardes cette URL publique
+    name: "Navettes de Substitution RER D",
+    slug: "substitution_rerd",                  // ← slug aligné à l’URL
+    folder: "nav_rerd",                         // ← dossier réel: public/photos/nav_rerd
+    h: 60
+  }
+];

@@ -1,0 +1,166 @@
+/* Reset léger */
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+img { max-width: 100%; height: auto; display: block; }
+a { text-decoration: none; color: inherit; }
+
+/* empêche un wrapper de bloquer le scroll */
+.network-index-page{
+  min-height: auto;
+  height: auto;
+  overflow: visible; /* ou auto si tu veux un scrolling interne */
+  scrollbar-gutter: stable; /* évite les sauts de mise en page */
+}
+
+:root{
+  --decor-left-w: 86px;   /* taille “initiale” à retrouver */
+  --decor-left-bottom: 10vh; /* plus bas; ajuste 6–14vh selon goût */
+}
+
+.decor-left{               /* l’élément conteneur */
+  position: fixed;
+  left: 0;
+  bottom: var(--decor-left-bottom);
+  width: var(--decor-left-w);
+  z-index: 0;
+  pointer-events: none;
+}
+.decor-left-img{           /* ton <img src="/brand/abribus.png"> */
+  width: 100%;
+  height: auto;
+  display: block;
+  opacity: .18;            /* discret */
+  filter: grayscale(1) contrast(.8) brightness(.9);
+}
+
+/* le contenu passe au-dessus et peut défiler normalement */
+.main-content{ position: relative; z-index: 1; }
+html, body{ height:100%; overflow-y:auto !important; }
+
+:root{
+  /* ⇣ ajuste juste cette largeur pour retrouver EXACTEMENT ta taille d’origine */
+  --decor-left-w: 72px;     /* ex: 72–86px selon ton ancien rendu */
+  --decor-left-bottom: 10vh; /* plus bas (augmente pour remonter) */
+}
+
+.decor-left{
+  position: fixed;
+  left: 0;
+  bottom: var(--decor-left-bottom);
+  width: var(--decor-left-w);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.decor-left-img{
+  width: 100%;
+  height: auto;
+  display: block;
+
+  /* discrétion + même “tint” que les cartes */
+  opacity: .18;
+  filter: grayscale(1) contrast(.8) brightness(.9);
+}
+
+/* le contenu scroll au-dessus, le fond ne bouge jamais */
+.main-content{ position: relative; z-index: 1; }
+
+/* garde-fou pour la barre de scroll qui disparaissait */
+html, body{ height:100%; overflow-y:auto !important; }
+:root{
+  --decor-left-w: 72px;      /* ← remets ta largeur d'origine (ex: 72–86px) */
+  --decor-left-bottom: 12vh;  /* ← plus bas; ajuste 8–14vh selon rendu */
+}
+
+.decor-left{
+  position: fixed;
+  left: 0;
+  bottom: var(--decor-left-bottom);
+  width: var(--decor-left-w);
+  z-index: 0;
+  pointer-events: none;
+}
+.decor-left-img{
+  width: 100%;
+  height: auto;
+  display: block;
+  opacity: .18;
+  filter: grayscale(1) contrast(.8) brightness(.9);
+}
+
+/* le contenu passe dessus; le fond reste immobile */
+.main-content{ position: relative; z-index: 1; }
+
+/* garde-fou barre de scroll */
+html, body{ height:100%; overflow-y:auto !important; }
+/* Abribus de fond (MainShell) — rempli l'espace ENTRE le header et le bas de page */
+:root{ --decor-gap-top: -2px; } /* ou -3px */
+
+.decor-left{
+  position: fixed !important;
+  left: 0 !important;
+
+  /* Top collé au BAS du header */
+  top: calc(var(--header-h, 140px) + var(--decor-gap-top)) !important;
+
+  /* Hauteur = hauteur de vue - header (et gap éventuel).
+     Fallback 100vh puis 100dvh pour iOS/Chrome récents */
+  height: calc(100vh - var(--header-h, 140px) - var(--decor-gap-top)) !important;
+  height: calc(100dvh - var(--header-h, 140px) - var(--decor-gap-top)) !important;
+
+  /* On ne force PLUS la largeur : elle suit le ratio de l’image */
+  width: auto !important;
+
+  z-index: 0;
+  pointer-events: none;
+}
+
+.decor-left-img{
+  /* L'image occupe TOUTE la hauteur disponible → 
+     le BAS de l’image touche le BAS de la page */
+  height: 100% !important;
+  width: auto !important;
+  display: block;
+
+  /* rendu discret, identique aux cartes */
+  opacity: .18;
+  filter: grayscale(1) contrast(.8) brightness(.9);
+}
+
+.main-content{ position: relative; z-index: 1; }
+
+/* Garde-fou scroll */
+html, body{ height:100%; overflow-y:auto !important; }
+main > section:first-child{ margin-top: 0; }
+.home-wrap h1, .gallery-wrap h1{ margin-top: 0; }
+
+/* Réduit le “trou” sous le header sur toutes les pages */
+header + main{ margin-top: -5 !important; }
+
+/* Évite le collapsing margin du premier bloc */
+body > main{
+  padding-top: 8px !important;   /* petit coussin, pas 0 */
+  overflow: auto;                /* crée un BFC → plus d’effondrement de marge */
+}
+
+/* Accueil : pas de marge parasite en haut */
+.home-wrap{ margin-top: 0 !important; }
+.home-wrap h1{ margin-top: 0 !important; }
+/* Empêche tout "trou" entre header et contenu */
+.app-stack{
+  display: flex;
+  flex-direction: column;  /* header, main, footer empilés */
+}
+
+/* Pas de marge top inattendue côté contenu */
+.site-main{
+  margin-top: 0 !important;
+  padding-top: 8px;        /* petit coussin visuel (mets 0 si tu veux collé) */
+}
+
+/* Neutralise la marge du premier élément rendu dans main */
+.site-main > section:first-child{ margin-top: 0 !important; }
+.site-main > section:first-child h1:first-child{ margin-top: 0 !important; }
+/* plus de “trou” sous le header, sans tout resserrer */
+
+
